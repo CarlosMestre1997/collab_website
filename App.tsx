@@ -133,7 +133,7 @@ const FullPage = ({
             alt={section.title} 
             className="full-page-image"
             style={{
-              filter: `hue-rotate(${hueRotation}deg) saturate(${1 + sliderValue / 50})`,
+              filter: `contrast(${0.5 + (sliderValue / 100) * 2.5}) saturate(${0.8 + (sliderValue / 100) * 0.8})`,
               transition: 'filter 0.1s ease-out'
             }}
           />
@@ -243,6 +243,7 @@ const App = () => {
               autorotateSpeed={0.015}
               enableSnapping={true}
               friction={0.92}
+              wheelSensitivity={0.0005}
               bendAmount={0.12}
               cornerRadius={0.12}
               onIndexChange={handleIndexChange}

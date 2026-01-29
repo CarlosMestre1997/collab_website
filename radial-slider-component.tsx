@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   animate,
   motion,
@@ -19,13 +19,41 @@ export const RadialSlider = ({
   const motionX = useMotionValue(0);
   const rotate = useMotionValue(0);
   const accumulatedRotation = useRef(0);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useMotionValueEvent(motionX, "change", (latest) => {
     rotate.set(accumulatedRotation.current + latest / 5);
   });
 
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleWheel = (event: WheelEvent) => {
+      event.preventDefault();
+      
+      const wheelDelta = event.deltaY * 0.5;
+      const currentRotation = rotate.get();
+      const newRotation = currentRotation + wheelDelta;
+      
+      rotate.set(newRotation);
+      accumulatedRotation.current = newRotation;
+
+      const snapAngle = 360 / maxValue;
+      let normalizedRotation = newRotation;
+      normalizedRotation = ((normalizedRotation % 360) + 360) % 360;
+      const nearestMultiple = Math.round(normalizedRotation / snapAngle) * snapAngle;
+      const topIndex = (maxValue - nearestMultiple / snapAngle) % maxValue;
+      onChange(Math.floor(topIndex));
+    };
+
+    container.addEventListener('wheel', handleWheel, { passive: false });
+    return () => container.removeEventListener('wheel', handleWheel);
+  }, [maxValue, onChange, rotate]);
+
   return (
     <motion.div
+      ref={containerRef}
       drag="x"
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0}
