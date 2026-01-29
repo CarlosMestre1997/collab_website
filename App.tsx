@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { ImageCarousel, ImageCarouselCanvas } from "./carousel-3d";
+import { RadialSlider } from "./radial-slider-component";
 import "./styles.css";
 
 const rootUrl =
@@ -105,6 +106,11 @@ const FullPage = ({
   section: (typeof sections)[0];
   onClose: () => void;
 }) => {
+  const [sliderValue, setSliderValue] = useState(0);
+
+  // Calculate hue rotation based on slider value (0-100 maps to 0-360 degrees)
+  const hueRotation = (sliderValue / 100) * 360;
+
   return (
     <div className="full-page">
       <button className="close-button" onClick={onClose}>
@@ -122,7 +128,24 @@ const FullPage = ({
       </button>
       <div className="full-page-content">
         <div className="full-page-image-container">
-          <img src={section.src} alt={section.title} className="full-page-image" />
+          <img 
+            src={section.src} 
+            alt={section.title} 
+            className="full-page-image"
+            style={{
+              filter: `hue-rotate(${hueRotation}deg) saturate(${1 + sliderValue / 50})`,
+              transition: 'filter 0.1s ease-out'
+            }}
+          />
+          <div className="radial-slider-container">
+            <div className="radial-slider-pointer" />
+            <RadialSlider 
+              value={sliderValue} 
+              onChange={setSliderValue}
+              maxValue={100}
+            />
+            <div className="radial-slider-gradient" />
+          </div>
         </div>
         <div className="full-page-text">
           <span className="full-page-subtitle">{section.subtitle}</span>

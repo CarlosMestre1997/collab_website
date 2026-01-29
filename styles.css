@@ -251,6 +251,70 @@ body {
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
 }
 
+/* Radial Slider */
+.radial-slider-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 2rem auto 0;
+}
+
+.radial-slider-wheel {
+  position: relative;
+  aspect-ratio: 1;
+  width: 100%;
+  cursor: grab;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.radial-slider-wheel:active {
+  cursor: grabbing;
+}
+
+.radial-slider-tick {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.radial-slider-tick-line {
+  position: absolute;
+  height: 2rem;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+
+.radial-slider-pointer {
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  z-index: 20;
+  height: 100%;
+  width: 2px;
+  transform: translateX(-50%) translateY(-0.75rem);
+  border-radius: 9999px;
+  background: white;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.radial-slider-gradient {
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  height: calc(50% + 1rem);
+  background: linear-gradient(to right, #3b82f6, #eab308);
+  mix-blend-mode: multiply;
+  border-radius: 0 0 50% 50%;
+}
+
 .full-page-text {
   flex: 1;
   padding: 2rem 0;
