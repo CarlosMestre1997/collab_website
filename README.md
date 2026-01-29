@@ -47,6 +47,41 @@ Website_Collab/
 - **TypeScript** - Type safety
 - **Vite** - Fast build tool
 
+## Deployment
+
+### Deploy to Vercel
+
+1. **Push your code to GitHub** (already done):
+   ```bash
+   git push origin main
+   ```
+
+2. **Import to Vercel**:
+   - Go to [vercel.com](https://vercel.com)
+   - Click "Add New Project"
+   - Import your GitHub repository
+   - Vercel will auto-detect Vite settings
+
+3. **Build Settings** (auto-configured):
+   - **Framework Preset**: Vite
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+   - **Install Command**: `npm install`
+
+4. Click **Deploy** and you're live! 🚀
+
+### Manual Build (Local Testing)
+
+```bash
+# Build for production
+npm run build
+
+# Preview production build locally
+npm run preview
+```
+
+The build output will be in the `dist/` directory.
+
 ## License
 
 MIT
