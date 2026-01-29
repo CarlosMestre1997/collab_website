@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { ImageCarousel, ImageCarouselCanvas } from "./carousel-3d";
 import { RadialSlider } from "./radial-slider-component";
+import { AsciiRenderer } from "./ascii-renderer/ascii-renderer";
 import "./styles.css";
 
 const rootUrl =
@@ -107,12 +108,24 @@ const FullPage = ({
   onClose: () => void;
 }) => {
   const [sliderValue, setSliderValue] = useState(0);
+  const [showAsciiModal, setShowAsciiModal] = useState(false);
 
-  // Memoize filter string for better performance
-  const filterStyle = useMemo(() => ({
-    filter: `contrast(${0.5 + (sliderValue / 100) * 2.5}) saturate(${0.8 + (sliderValue / 100) * 0.8})`,
-    transition: 'filter 0.05s ease-out'
-  }), [sliderValue]);
+  // Memoize filter string with radical effects
+  const filterStyle = useMemo(() => {
+    const normalized = sliderValue / 100;
+    const effects = [
+      `hue-rotate(${normalized * 360}deg)`,
+      `saturate(${1 + normalized * 3})`,
+      `brightness(${1 + normalized * 0.8})`,
+      `contrast(${1 + normalized * 1.5})`,
+      normalized > 0.7 ? `invert(${(normalized - 0.7) * 3})` : ''
+    ].filter(Boolean).join(' ');
+    
+    return {
+      filter: effects,
+      transition: 'filter 0.05s ease-out'
+    };
+  }, [sliderValue]);
 
   return (
     <div className="full-page">
@@ -155,9 +168,26 @@ const FullPage = ({
               <p key={i}>{paragraph}</p>
             ))}
           </div>
-          <button className="cta-button">Explore More</button>
+          <button className="cta-button" onClick={() => setShowAsciiModal(true)}>
+            Explore More
+          </button>
         </div>
       </div>
+      
+      {/* ASCII Modal */}
+      {showAsciiModal && (
+        <div className="ascii-modal-overlay" onClick={() => setShowAsciiModal(false)}>
+          <div className="ascii-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="ascii-modal-close" onClick={() => setShowAsciiModal(false)}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+            <AsciiRenderer />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

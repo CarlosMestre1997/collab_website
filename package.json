@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@number-flow/react": "^0.5.11",
+    "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
     "motion": "^12.29.2",
     "react": "^19.0.0",
