@@ -19,10 +19,21 @@ export const RadialSlider = ({
   const motionX = useMotionValue(0);
   const rotate = useMotionValue(0);
   const accumulatedRotation = useRef(0);
+  const dragStartRotation = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const updateValue = (rotation: number) => {
+    const snapAngle = 360 / maxValue;
+    let normalizedRotation = rotation;
+    normalizedRotation = ((normalizedRotation % 360) + 360) % 360;
+    const nearestMultiple = Math.round(normalizedRotation / snapAngle) * snapAngle;
+    const topIndex = (maxValue - nearestMultiple / snapAngle) % maxValue;
+    onChange(Math.floor(topIndex));
+  };
+
   useMotionValueEvent(motionX, "change", (latest) => {
-    rotate.set(accumulatedRotation.current + latest / 5);
+    const newRotation = dragStartRotation.current + latest / 3;
+    rotate.set(newRotation);
   });
 
   useEffect(() => {
@@ -38,13 +49,7 @@ export const RadialSlider = ({
       
       rotate.set(newRotation);
       accumulatedRotation.current = newRotation;
-
-      const snapAngle = 360 / maxValue;
-      let normalizedRotation = newRotation;
-      normalizedRotation = ((normalizedRotation % 360) + 360) % 360;
-      const nearestMultiple = Math.round(normalizedRotation / snapAngle) * snapAngle;
-      const topIndex = (maxValue - nearestMultiple / snapAngle) % maxValue;
-      onChange(Math.floor(topIndex));
+      updateValue(newRotation);
     };
 
     container.addEventListener('wheel', handleWheel, { passive: false });
@@ -57,19 +62,14 @@ export const RadialSlider = ({
       drag="x"
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0}
+      onDragStart={() => {
+        dragStartRotation.current = accumulatedRotation.current;
+        motionX.set(0);
+      }}
       onDrag={(event, info) => {
         motionX.set(info.offset.x);
-
-        const currentRotation = rotate.get();
-
-        const snapAngle = 360 / maxValue;
-        let normalizedRotation = currentRotation;
-        normalizedRotation = ((normalizedRotation % 360) + 360) % 360;
-        const nearestMultiple =
-          Math.round(normalizedRotation / snapAngle) * snapAngle;
-
-        const topIndex = (maxValue - nearestMultiple / snapAngle) % maxValue;
-        onChange(Math.floor(topIndex));
+        const currentRotation = dragStartRotation.current + info.offset.x / 3;
+        updateValue(currentRotation);
       }}
       onDragEnd={() => {
         const currentRotation = rotate.get();
