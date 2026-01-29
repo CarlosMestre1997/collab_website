@@ -236,6 +236,7 @@ const NavDots = ({
 const App = () => {
   const [selectedSection, setSelectedSection] = useState<number | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [activeModal, setActiveModal] = useState<'collections' | 'about' | 'contact' | null>(null);
 
   const handleSectionSelect = useCallback((index: number) => {
     setSelectedSection(index);
@@ -249,6 +250,14 @@ const App = () => {
     setCurrentIndex(index);
   }, []);
 
+  const openModal = (modal: 'collections' | 'about' | 'contact') => {
+    setActiveModal(modal);
+  };
+
+  const closeModal = () => {
+    setActiveModal(null);
+  };
+
   return (
     <div className="app">
       {/* Carousel Homepage */}
@@ -258,10 +267,10 @@ const App = () => {
         <header className="header">
           <div className="logo">GALLERY</div>
           <nav className="nav">
-            <a href="#" className="nav-link">Home</a>
-            <a href="#" className="nav-link">Collections</a>
-            <a href="#" className="nav-link">About</a>
-            <a href="#" className="nav-link">Contact</a>
+            <a href="#" className="nav-link" onClick={(e) => { e.preventDefault(); }}>Home</a>
+            <a href="#" className="nav-link" onClick={(e) => { e.preventDefault(); openModal('collections'); }}>Collections</a>
+            <a href="#" className="nav-link" onClick={(e) => { e.preventDefault(); openModal('about'); }}>About</a>
+            <a href="#" className="nav-link" onClick={(e) => { e.preventDefault(); openModal('contact'); }}>Contact</a>
           </nav>
         </header>
 
@@ -299,6 +308,141 @@ const App = () => {
           section={sections[selectedSection]}
           onClose={handleClose}
         />
+      )}
+
+      {/* Info Modals */}
+      {activeModal === 'collections' && (
+        <div className="info-modal-overlay">
+          <div className="info-modal">
+            <button className="info-modal-close" onClick={closeModal}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+            <div className="info-modal-content">
+              <h2 className="info-modal-title">Our Collections</h2>
+              <div className="info-modal-grid">
+                <div className="info-card">
+                  <div className="info-card-number">01</div>
+                  <h3>Digital Art</h3>
+                  <p>Curated selection of contemporary digital artwork from emerging and established artists worldwide.</p>
+                </div>
+                <div className="info-card">
+                  <div className="info-card-number">02</div>
+                  <h3>Photography</h3>
+                  <p>Stunning visual narratives capturing moments, emotions, and stories through the lens.</p>
+                </div>
+                <div className="info-card">
+                  <div className="info-card-number">03</div>
+                  <h3>Abstract Works</h3>
+                  <p>Experimental pieces pushing the boundaries of form, color, and perception.</p>
+                </div>
+                <div className="info-card">
+                  <div className="info-card-number">04</div>
+                  <h3>3D Renders</h3>
+                  <p>Cutting-edge three-dimensional creations blending art with technology.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeModal === 'about' && (
+        <div className="info-modal-overlay">
+          <div className="info-modal">
+            <button className="info-modal-close" onClick={closeModal}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+            <div className="info-modal-content">
+              <h2 className="info-modal-title">About Us</h2>
+              <div className="info-modal-text">
+                <p className="info-lead">We are a digital gallery dedicated to showcasing innovative visual experiences at the intersection of art and technology.</p>
+                <div className="info-stats">
+                  <div className="info-stat">
+                    <div className="info-stat-value">500+</div>
+                    <div className="info-stat-label">Artworks</div>
+                  </div>
+                  <div className="info-stat">
+                    <div className="info-stat-value">120+</div>
+                    <div className="info-stat-label">Artists</div>
+                  </div>
+                  <div className="info-stat">
+                    <div className="info-stat-value">25+</div>
+                    <div className="info-stat-label">Countries</div>
+                  </div>
+                </div>
+                <p>Founded in 2024, our platform bridges the gap between traditional art appreciation and modern digital experiences. We believe in making art accessible, interactive, and engaging for everyone.</p>
+                <p>Our mission is to empower artists, inspire audiences, and push the boundaries of what's possible in digital exhibition spaces.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeModal === 'contact' && (
+        <div className="info-modal-overlay">
+          <div className="info-modal">
+            <button className="info-modal-close" onClick={closeModal}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+            <div className="info-modal-content">
+              <h2 className="info-modal-title">Get in Touch</h2>
+              <div className="info-modal-text">
+                <p className="info-lead">We'd love to hear from you. Whether you're an artist, collector, or art enthusiast.</p>
+                <div className="contact-methods">
+                  <div className="contact-method">
+                    <div className="contact-icon">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                      </svg>
+                    </div>
+                    <div>
+                      <h4>Email</h4>
+                      <p>hello@gallery.com</p>
+                    </div>
+                  </div>
+                  <div className="contact-method">
+                    <div className="contact-icon">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <h4>Phone</h4>
+                      <p>+1 (555) 123-4567</p>
+                    </div>
+                  </div>
+                  <div className="contact-method">
+                    <div className="contact-icon">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                      </svg>
+                    </div>
+                    <div>
+                      <h4>Location</h4>
+                      <p>123 Art District, Creative Quarter</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="social-links">
+                  <a href="#" className="social-link">Instagram</a>
+                  <a href="#" className="social-link">Twitter</a>
+                  <a href="#" className="social-link">Behance</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
