@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { ImageCarousel, ImageCarouselCanvas } from "./carousel-3d";
 import { RadialSlider } from "./radial-slider-component";
 import "./styles.css";
@@ -108,8 +108,11 @@ const FullPage = ({
 }) => {
   const [sliderValue, setSliderValue] = useState(0);
 
-  // Calculate hue rotation based on slider value (0-100 maps to 0-360 degrees)
-  const hueRotation = (sliderValue / 100) * 360;
+  // Memoize filter string for better performance
+  const filterStyle = useMemo(() => ({
+    filter: `contrast(${0.5 + (sliderValue / 100) * 2.5}) saturate(${0.8 + (sliderValue / 100) * 0.8})`,
+    transition: 'filter 0.05s ease-out'
+  }), [sliderValue]);
 
   return (
     <div className="full-page">
@@ -132,10 +135,7 @@ const FullPage = ({
             src={section.src} 
             alt={section.title} 
             className="full-page-image"
-            style={{
-              filter: `contrast(${0.5 + (sliderValue / 100) * 2.5}) saturate(${0.8 + (sliderValue / 100) * 0.8})`,
-              transition: 'filter 0.1s ease-out'
-            }}
+            style={filterStyle}
           />
           <div className="radial-slider-container">
             <div className="radial-slider-pointer" />
@@ -242,7 +242,7 @@ const App = () => {
               autorotate={true}
               autorotateSpeed={0.015}
               enableSnapping={true}
-              friction={0.92}
+              friction={0.94}
               wheelSensitivity={0.0005}
               bendAmount={0.12}
               cornerRadius={0.12}

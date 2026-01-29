@@ -48,7 +48,7 @@ export const ImageCarouselCanvas = ({
       shadows
       camera={{ position: [0, 0, 12], fov: 45 }}
       frameloop={frameloop}
-      gl={async (props) => {
+      gl={async (props: any) => {
         const renderer = new WebGPURenderer(props as any);
         renderer.init().then(() => {
           setFrameloop("always");
@@ -124,7 +124,7 @@ export const ImageCarousel = ({
   });
 
   // Mouse wheel handler
-  const handleWheel = (event) => {
+  const handleWheel = (event: WheelEvent) => {
     event.preventDefault();
     // Apply wheel sensitivity properly scaled
     const wheelForce = event.deltaY * wheelSensitivity;
@@ -133,13 +133,13 @@ export const ImageCarousel = ({
   };
 
   // Mouse drag handlers
-  const handleMouseDown = (event) => {
+  const handleMouseDown = (event: MouseEvent) => {
     isDragging.current = true;
     lastMouseX.current = event.clientX;
     gl.domElement.style.cursor = "grabbing";
   };
 
-  const handleMouseMove = (event) => {
+  const handleMouseMove = (event: MouseEvent) => {
     if (!isDragging.current) return;
 
     const deltaX = event.clientX - lastMouseX.current;
@@ -156,12 +156,12 @@ export const ImageCarousel = ({
   };
 
   // Touch handlers for mobile
-  const handleTouchStart = (event) => {
+  const handleTouchStart = (event: TouchEvent) => {
     isDragging.current = true;
     lastMouseX.current = event.touches[0].clientX;
   };
 
-  const handleTouchMove = (event) => {
+  const handleTouchMove = (event: TouchEvent) => {
     if (!isDragging.current) return;
 
     const deltaX = event.touches[0].clientX - lastMouseX.current;

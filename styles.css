@@ -14,12 +14,15 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
   background: #1a1a1a;
   color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .app {
   width: 100%;
   height: 100%;
   position: relative;
+  will-change: contents;
 }
 
 /* Header */
@@ -66,12 +69,13 @@ body {
   width: 100%;
   height: 100%;
   position: relative;
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  will-change: opacity, transform;
 }
 
 .carousel-container.hidden {
   opacity: 0;
-  transform: scale(0.95);
+  transform: scale(0.98);
   pointer-events: none;
 }
 
@@ -81,6 +85,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
+  will-change: transform;
 }
 
 /* Title Overlay */
@@ -97,7 +102,8 @@ body {
   backdrop-filter: blur(10px);
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  will-change: transform, background, border-color;
 }
 
 .title-overlay:hover {
@@ -192,13 +198,14 @@ body {
   background: #0a0a0a;
   z-index: 200;
   overflow-y: auto;
-  animation: fadeIn 0.5s ease;
+  animation: fadeIn 0.3s ease;
+  will-change: opacity, transform;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: scale(1.05);
+    transform: scale(1.03);
   }
   to {
     opacity: 1;
@@ -249,6 +256,8 @@ body {
   height: auto;
   border-radius: 20px;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+  will-change: filter;
+  transform: translateZ(0);
 }
 
 /* Radial Slider */
@@ -266,6 +275,8 @@ body {
   cursor: grab;
   border-radius: 50%;
   background: transparent;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .radial-slider-wheel:active {
